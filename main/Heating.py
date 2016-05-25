@@ -9,20 +9,20 @@ import RPi.GPIO as GPIO
    
 def main():
     print 'Hello, world!'
-    
+
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(7, GPIO.OUT)
-    
+
     pin = 7
-    
+
     while True:
-        
-        time.sleep( 1 )
-        GPIO.output(pin, 0) 
-        print "set pin " + pin + " to low"
-        time.sleep( 1 )
-        GPIO.output(7, 1)   
-        print "set pin " + pin + " to high"
+
+        time.sleep( 5 )
+        GPIO.output(pin, 0)
+        print "set pin " + str(pin) + " to low"
+        time.sleep( 5 )
+        GPIO.output(7, 1)
+        print "set pin " + str(pin) + " to high"
 
         
         
