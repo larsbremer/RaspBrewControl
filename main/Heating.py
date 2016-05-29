@@ -8,6 +8,7 @@ import time
 import logging
 import logging.handlers
 import ConfigParser
+import sys
 import RPi.GPIO as GPIO
 
 class Heating(object):
@@ -85,4 +86,9 @@ class Heating(object):
             time.sleep( self.interval )
 
 if __name__ == '__main__':
-    Heating()
+
+    try:
+        Heating()
+    except KeyboardInterrupt:
+        GPIO.cleanup()
+        sys.exit(0)
