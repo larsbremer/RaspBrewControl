@@ -57,10 +57,10 @@ class Heating(object):
         config = ConfigParser.RawConfigParser()
         config.read('config.properties')
 
-        self.pin = config.get('Heater', 'heater.pin');
-        self.interval = config.get('Heater', 'heater.interval');
-        self.hysterese = config.get('Heater', 'heater.hysterese');
-        self.targetTemp = config.get('Heater', 'heater.targettemp');
+        self.pin = config.getint('Heater', 'heater.pin');
+        self.interval = config.getint('Heater', 'heater.interval');
+        self.hysterese = config.getint('Heater', 'heater.hysterese');
+        self.targetTemp = config.getint('Heater', 'heater.targettemp');
     
         #Setup the pin
         GPIO.setmode(GPIO.BOARD)
