@@ -11,29 +11,6 @@ import RPi.GPIO as GPIO
 
 class Heating(object):
 
-    # Configure loggers
-    logger = logging.getLogger('brewcontrol')
-    logger.setLevel(logging.DEBUG)
-    
-    fh = logging.handlers.RotatingFileHandler('brew.log', mode='w', maxBytes='10000000', backupCount='5')
-    fh.setLevel(logging.DEBUG)
-    
-    ch = logging.StreamHandler();
-    ch.setLevel(logging.DEBUG)
-    
-    formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
-    fh.setFormatter(formatter)
-    ch.setFormatter(formatter)
-    
-    logger.addHandler(fh)
-    logger.addHandler(ch)
-    
-    pin = 7
-    interval = 5
-    hysterese = 5
-    targetTemp = 50
-    heaterRunning = False
-
     def readTemp(self):
         
         tfile = open("/sys/bus/w1/devices/28-00000555e0ae/w1_slave") 
@@ -47,38 +24,61 @@ class Heating(object):
     
     def turnHeaterOn(self):
         
-        logger.info('Turning heater on'+ str(heaterRunning))
+        self.logger.info('Turning heater on'+ str(self.heaterRunning))
         '''GPIO.output(pin, 0)'''
-        heaterRunning = True
-        logger.info('Turning heater on2'+ str(heaterRunning))
+        self.heaterRunning = True
+        self.logger.info('Turning heater on2'+ str(self.heaterRunning))
     
     
     def turnHeaterOff(self):
        
-        logger.info('Turning heater off')
+        self.logger.info('Turning heater off')
         '''GPIO.output(pin, 1)'''
-        heaterRunning = False
+        self.heaterRunning = False
     
     def __init__(self):
         
-        logger.info('Gentlemen, start your engines!...')
+            # Configure loggers
+        self.logger = logging.getLogger('brewcontrol')
+        self.logger.setLevel(logging.DEBUG)
+        
+        fh = logging.handlers.RotatingFileHandler('brew.log', mode='w', maxBytes='10000000', backupCount='5')
+        fh.setLevel(logging.DEBUG)
+        
+        ch = logging.StreamHandler();
+        ch.setLevel(logging.DEBUG)
+        
+        formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
+        fh.setFormatter(formatter)
+        ch.setFormatter(formatter)
+        
+        self.logger.addHandler(fh)
+        self.logger.addHandler(ch)
+        
+        self.logger.info('Gentlemen, start your engines!...')
+        
+        self.pin = 7
+        self.interval = 5
+        self.hysterese = 5
+        self.targetTemp = 50
+        self.heaterRunning = False
     
         #Setup the pin
         GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(pin, GPIO.OUT)
+        GPIO.setup(self.pin, GPIO.OUT)
     
         while True:
             
-            temp = readTemp()
-            tempDelta = temp - targetTemp
-            logger.info('Temperature is ' + str(temp) + ', target is ' + str(targetTemp) + ', difference is ' + str(tempDelta) + ', heater running ' + str(heaterRunning))
+            temp = self.readTemp()
+            tempDelta = temp - self.targetTemp
+            self.logger.info('Temperature is ' + str(temp) + ', target is ' + str(self.targetTemp) + ', difference is ' + str(tempDelta) + ', heater running ' + str(self.heaterRunning))
             
-            if temp + hysterese < targetTemp and not heaterRunning:
+            if temp + self.hysterese < self.targetTemp and not self.heaterRunning:
                 self.turnHeaterOn()
-            elif temp - hysterese > targetTemp and heaterRunning:
+            elif temp - self.hysterese > self.targetTemp and self.heaterRunning:
                 self.turnHeaterOff()
     
-            time.sleep( interval )
+            time.sleep( self.interval )
 
 if __name__ == '__main__':
     Heating()
