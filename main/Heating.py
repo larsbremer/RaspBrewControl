@@ -68,8 +68,7 @@ class Heating(object):
         while True:
             
             temp = self.readTemp()
-            tempDelta = temp - self.targetTemp
-            self.logger.info('Temperature is ' + str(temp) + ', target is ' + str(self.targetTemp) + ', difference is ' + str(tempDelta) + ', heater running ' + str(self.heaterRunning))
+            self.logger.info('Temperature is ' + str("%.2f" % temp) + ', target is ' + str(self.targetTemp) + ', heater on? ' + str(self.heaterRunning))
             
             if temp + self.hysterese < self.targetTemp and not self.heaterRunning:
                 self.turnHeaterOn()
