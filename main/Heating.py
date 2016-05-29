@@ -26,13 +26,11 @@ class Heating(object):
         
         self.logger.info('Turning heater on')
         GPIO.output(self.pin, 0)
-        self.heaterRunning = True
     
     def turnHeaterOff(self):
        
         self.logger.info('Turning heater off')
         GPIO.output(self.pin, 1)
-        self.heaterRunning = False
     
     def __init__(self):
         
@@ -59,7 +57,6 @@ class Heating(object):
         self.interval = 5
         self.hysterese = 5
         self.targetTemp = 50
-        self.heaterRunning = False
     
         #Setup the pin
         GPIO.setmode(GPIO.BOARD)
@@ -68,16 +65,17 @@ class Heating(object):
         while True:
             
             temp = self.readTemp()
+            heaterRunning = not bool(GPIO.input(self.pin));
             
             logString = 'Temperature is ' + str("%.2f" % temp)
             logString += ', target is ' + str(self.targetTemp)
-            logString += ', heater is ' + ('on' if self.heaterRunning else 'off')
+            logString += ', heater is ' + ('on' if heaterRunning else 'off')
             
             self.logger.info(logString)
             
-            if temp + self.hysterese < self.targetTemp and not self.heaterRunning:
+            if temp + self.hysterese < self.targetTemp and not heaterRunning:
                 self.turnHeaterOn()
-            elif temp - self.hysterese > self.targetTemp and self.heaterRunning:
+            elif temp - self.hysterese > self.targetTemp and heaterRunning:
                 self.turnHeaterOff()
     
             time.sleep( self.interval )
