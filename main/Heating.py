@@ -17,10 +17,10 @@ def main():
 
     while True:
 
-        time.sleep( 5 )
+        time.sleep( 60 )
         GPIO.output(pin, 0)
         print "set pin " + str(pin) + " to low"
-        time.sleep( 5 )
+        time.sleep( 60 )
         GPIO.output(7, 1)
         print "set pin " + str(pin) + " to high"
 
