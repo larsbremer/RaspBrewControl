@@ -24,21 +24,19 @@ class Heating(object):
     
     def turnHeaterOn(self):
         
-        self.logger.info('Turning heater on'+ str(self.heaterRunning))
-        '''GPIO.output(pin, 0)'''
+        self.logger.info('Turning heater on')
+        GPIO.output(self.pin, 0)
         self.heaterRunning = True
-        self.logger.info('Turning heater on2'+ str(self.heaterRunning))
-    
     
     def turnHeaterOff(self):
        
         self.logger.info('Turning heater off')
-        '''GPIO.output(pin, 1)'''
+        GPIO.output(self.pin, 1)
         self.heaterRunning = False
     
     def __init__(self):
         
-            # Configure loggers
+        # Configure loggers
         self.logger = logging.getLogger('brewcontrol')
         self.logger.setLevel(logging.DEBUG)
         
