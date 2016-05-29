@@ -7,6 +7,7 @@ Created on May 25, 2016
 import time
 import logging
 import logging.handlers
+import ConfigParser
 import RPi.GPIO as GPIO
 
 class Heating(object):
@@ -53,10 +54,13 @@ class Heating(object):
         
         self.logger.info('Gentlemen, start your engines!...')
         
-        self.pin = 7
-        self.interval = 5
-        self.hysterese = 5
-        self.targetTemp = 50
+        config = ConfigParser.RawConfigParser()
+        config.read('config.properties')
+
+        self.pin = config.get('Heater', 'heater.pin');
+        self.interval = config.get('Heater', 'heater.interval');
+        self.hysterese = config.get('Heater', 'heater.hysterese');
+        self.targetTemp = config.get('Heater', 'heater.targettemp');
     
         #Setup the pin
         GPIO.setmode(GPIO.BOARD)
