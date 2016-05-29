@@ -5,7 +5,6 @@ Created on May 25, 2016
 '''
 
 import time
-import logging
 import logging.handlers
 import ConfigParser
 import sys
