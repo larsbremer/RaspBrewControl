@@ -10,8 +10,7 @@ import logging.handlers
 import RPi.GPIO as GPIO
 
 class Heating(object):
-    
-        
+
     # Configure loggers
     logger = logging.getLogger('brewcontrol')
     logger.setLevel(logging.DEBUG)
@@ -35,8 +34,6 @@ class Heating(object):
     targetTemp = 50
     heaterRunning = False
 
-
-    
     def readTemp(self):
         
         tfile = open("/sys/bus/w1/devices/28-00000555e0ae/w1_slave") 
@@ -78,7 +75,7 @@ class Heating(object):
             
             if temp + hysterese < targetTemp and not heaterRunning:
                 self.turnHeaterOn()
-        elif temp - hysterese > targetTemp and heaterRunning:
+            elif temp - hysterese > targetTemp and heaterRunning:
                 self.turnHeaterOff()
     
             time.sleep( interval )
