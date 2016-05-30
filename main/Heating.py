@@ -8,6 +8,7 @@ import time
 import logging.handlers
 import ConfigParser
 import sys
+import os
 import RPi.GPIO as GPIO
 
 class Heating(object):
@@ -38,8 +39,8 @@ class Heating(object):
         # Configure loggers
         self.logger = logging.getLogger('brewcontrol')
         self.logger.setLevel(logging.DEBUG)
-        
-        fh = logging.handlers.RotatingFileHandler('brew.log', mode='w', maxBytes='10000000', backupCount='5')
+        path = os.path.abspath(os.path.dirname(__file__)) 
+        fh = logging.handlers.RotatingFileHandler(path +  '/' + 'brew.log', mode='w', maxBytes='10000000', backupCount='5')
         fh.setLevel(logging.DEBUG)
         
         ch = logging.StreamHandler();
@@ -55,7 +56,7 @@ class Heating(object):
         self.logger.info('Gentlemen, start your engines!...')
         
         config = ConfigParser.RawConfigParser()
-        config.read('config.properties')
+        config.read(path +  '/' + 'config.properties')
 
         self.pin = config.getint('Heater', 'heater.pin');
         self.interval = config.getint('Heater', 'heater.interval');
